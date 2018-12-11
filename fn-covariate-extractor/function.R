@@ -16,6 +16,7 @@ source('utils.R')
 extract_covariate <- function(input_string) {
 
   input = jsonlite::fromJSON(input_string)
+  message(paste("\nReceived: ", input_string, "\n"))
   
   # Function to retrieve covariates for a set of
   # spatial queries (points or polygons)
