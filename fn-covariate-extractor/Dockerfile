@@ -1,4 +1,4 @@
-FROM alpine:3.8
+FROM rocker/geospatial
 
 RUN mkdir -p /home/app
 
@@ -8,7 +8,7 @@ RUN apk --no-cache add curl \
     && chmod +x /usr/bin/fwatchdog \
     && cp /usr/bin/fwatchdog /home/app \
     && apk del curl --no-cache
-    
+
 # Add non root user
 RUN addgroup -S app && adduser app -S -G app
 
@@ -17,6 +17,8 @@ RUN chown app /home/app
 WORKDIR /home/app
 
 USER app
+
+RUN Rscript "install.packages(c('rworldmap', 'downloader', 'jsonlite'))"
 
 # Populate example here - i.e. "cat", "sha512sum" or "node index.js"
 ENV fprocess="cat"
