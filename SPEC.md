@@ -22,8 +22,8 @@ Input GeoJSON FeatureCollection with additional values added.
 ## Layer names
 
 From BioClim (insert link/docs)
-	- b1 to b19 index
+	- `bioclim1` to `bioclim19` index
 
 Also:
-	- `elev` - elevation from XX source
-	- `dist_to_water` 'distance to water' layer from XX source
+	- `elev_m` - elevation in metres from XX source
+	- `dist_to_water_m` 'distance to water' in metres layer from XX source

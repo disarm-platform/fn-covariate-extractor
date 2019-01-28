@@ -1,6 +1,7 @@
 {
   "layer_names": [
-    "b1", "elev"
+    "b1", "elev_m", 
+    "dist_to_water_m"
   ],
   "points": {
     "type": "FeatureCollection",
