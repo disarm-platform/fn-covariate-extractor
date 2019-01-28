@@ -4,6 +4,7 @@ library(RANN)
 library(sf)
 library(downloader)
 library(jsonlite)
+library(geosphere)
 
 coords2country = dget('function/coords2country.R')
 
@@ -71,8 +72,11 @@ handle_dist_to_water_m = function(points, country) {
   water_coords <- st_coordinates(st_geometry(water_bodies))[, 1:2]
   
   # Calc dist to nearest
-  points$dist_to_water_m <-
-    as.vector(nn2(water_coords, st_coordinates(points), k = 1)$nn.dists)
+  browser()
+  coords <- st_coordinates(points)
+  closest <- nn2(water_coords, coords, k = 1)$nn.idx
+  dist_m_matrix <- distm(coords, water_coords[closest,])
+  points$dist_to_water_m <- apply(dist_m_matrix, 1, min)
 
   return(points)
 }

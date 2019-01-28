@@ -4,6 +4,7 @@ install.packages(c('jsonlite',
 				   'rworldmap',
 				   'RANN',
 				   'sf',
-				   'downloader'))
+				   'downloader',
+				   'geosphere'))
 
 

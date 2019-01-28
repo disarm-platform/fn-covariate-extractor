@@ -1,6 +1,6 @@
 {
   "layer_names": [
-    "b1", "elev_m", 
+    "elev_m", 
     "dist_to_water_m"
   ],
   "points": {
