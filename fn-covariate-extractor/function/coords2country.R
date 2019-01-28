@@ -1,4 +1,4 @@
-coords2country = function(points) {
+function(points) {
   countriesSP <- getMap(resolution = 'low')
   #setting CRS directly to that from rworldmap
   pointsSP = SpatialPoints(points, proj4string = CRS(proj4string(countriesSP)))

@@ -1,4 +1,5 @@
 
+
 library(raster)
 library(rworldmap)
 library(RANN)
@@ -6,141 +7,77 @@ library(sf)
 library(downloader)
 library(jsonlite)
 
-source('utils.R')
+coords2country = dget('function/coords2country.R')
 
-
-function(params) {
-  points = st_read(params$points)
-  layer_names = tolower(params$layer_names)
-  country = as.character(coords2country(coords)[1])
-
-  for(layer_name in layer_names) {
-    handle_layer(layer_name, country)
-  }
-
-  return(points)
-}
-
-
-handle_layer = function(layer_name, country) {
-
+handle_layer = function(points, layer_name, country) {
   if (layer_name %in% paste0("b", 1:19)) {
-    handle_bioclim(layer_name)
+    return(handle_bioclim(points, layer_name))
   } else if (layer_name == "elev") {
-    handle_elev(country)
+    return(handle_elev(points, country))
   } else if (layer_name == "dist_to_water") {
-    handle_dist_to_water(country)
+    return(handle_dist_to_water(points, country))
   } else {
     stop(paste('Unknown layer name', layer_name))
   }
-
 }
 
-
-handle_bioclim = function(layer_name) {
-    layer = as.numeric(layer)
-    layers_raster <- raster::getData('worldclim', var = 'bio', res = 10)[[layer]]
-    
-    # Extract values
-    extracted_values <- as.list(data.frame(raster::extract(layers_raster, coords)))
-    names(extracted_values) <- as.character(layer)
-    points$elev = extracted_values
+handle_bioclim = function(points, layer_name) {
+  layer = as.numeric(layer)
+  layers_raster <-
+    raster::getData('worldclim', var = 'bio', res = 10)[[layer]]
+  
+  # Extract values
+  extracted_values <-
+    as.list(data.frame(raster::extract(layers_raster, coords)))
+  names(extracted_values) <- as.character(layer)
+  points$elev = extracted_values
+  return(points)
 }
 
-handle_elev = function(country) {
-    elev <- raster::getData('alt', country = country)
-    points$elev <- raster::extract(elev, points)
+handle_elev = function(points, country) {
+  elev <- raster::getData('alt', country = country)
+  coords <- st_coordinates(points)
+  points$elev <- raster::extract(elev, coords)
+  return(points)
 }
 
-handle_dist_to_water = function(country) {
-      download(
-      url = paste0(
-        "http://biogeo.ucdavis.edu/data/diva/wat/",
-        country,
-        "_wat.zip"
-      ),
-      paste0("water", country, ".zip"),
-      mode = "wb"
-    )
-    outDir <-
-      paste0(getwd(), "/water", country) # Define the folder where the zip file should be unzipped to
-    unzip(paste0("water", country, ".zip"), exdir = outDir)
-    water_bodies <-
-      st_read(
-        dsn = paste0(getwd(), "/water", country),
-        layer = paste0(country, "_water_areas_dcw")
-      )
-    
-    # get coordinates
-    water_coords <- st_coordinates(st_geometry(water_bodies))[, 1:2]
-    
-    # Calc dist to nearest
-    extracted_values$dist_to_water <-
-      as.vector(nn2(water_coords, coords, k = 1)$nn.dists)
+handle_dist_to_water = function(points, country) {
+  return(points)
+  # download(
+  #   url = paste0(
+  #     "http://biogeo.ucdavis.edu/data/diva/wat/",
+  #     country,
+  #     "_wat.zip"
+  #   ),
+  #   paste0("water", country, ".zip"),
+  #   mode = "wb"
+  # )
+  # outDir <-
+  #   paste0(getwd(), "/water", country) # Define the folder where the zip file should be unzipped to
+  # unzip(paste0("water", country, ".zip"), exdir = outDir)
+  # water_bodies <-
+  #   st_read(
+  #     dsn = paste0(getwd(), "/water", country),
+  #     layer = paste0(country, "_water_areas_dcw")
+  #   )
+  
+  # # get coordinates
+  # water_coords <- st_coordinates(st_geometry(water_bodies))[, 1:2]
+  
+  # # Calc dist to nearest
+  # extracted_values$dist_to_water <-
+  #   as.vector(nn2(water_coords, coords, k = 1)$nn.dists)
 }
 
+function(params) {
+  points = st_read(as.json(params$points), quiet = T)
+  layer_names = tolower(params$layer_names)
+  country = as.character(coords2country(st_coordinates(points))[1])
+  
+  for (layer_name in layer_names) {
+    points = handle_layer(points, layer_name, country)
+  }
 
-  # Function to retrieve covariates for a set of
-  # spatial queries (points or polygons)
-  # coords <- cbind(input$coords$lng, input$coords$lat)
-  # extracted_values <- list()
-  
-  # If layers have been specified then get them
-  # and extract values
-  
-  # if (!is.null(input$layer_names)) {
-  #   # ID which layers to get
-  #   layers <- input$layer_name
-    
-  #   # get layers
-  #   # layers_raster <- raster::getData('worldclim', var = 'bio', res = 10)[[layers]]
-    
-  #   # # Extract values
-  #   # extracted_values <- as.list(data.frame(raster::extract(layers_raster, coords)))
-  #   # names(extracted_values) <- as.character(layers)
-  # } else {
-  #   # TODO: Do what if there's no input$layer_name?
-  #   # Do we want to invert the logic and have this right at the top, so we return 
-  #   # an error immediately if there's no layer_name, or stick with returning an empty list now?
-  # }
-  
-  # # If elev=TRUE then get elev data
-  # # Get elevation data
-  # country <- as.character(coords2country(coords)[1])
-  
-  # if (input$elev == TRUE) {
-  #   elev <- raster::getData('alt', country = country)
-  #   extracted_values$elev <- raster::extract(elev, coords)
-  # }
-  
-  # if (input$dist_to_water == TRUE) {
-  #   # Download and load in data
-  #   # download(
-  #   #   url = paste0(
-    #     "http://biogeo.ucdavis.edu/data/diva/wat/",
-    #     country,
-    #     "_wat.zip"
-    #   ),
-    #   paste0("water", country, ".zip"),
-    #   mode = "wb"
-    # )
-    # outDir <-
-    #   paste0(getwd(), "/water", country) # Define the folder where the zip file should be unzipped to
-    # unzip(paste0("water", country, ".zip"), exdir = outDir)
-    # water_bodies <-
-    #   st_read(
-    #     dsn = paste0(getwd(), "/water", country),
-    #     layer = paste0(country, "_water_areas_dcw")
-    #   )
-    
-    # # get coordinates
-    # water_coords <- st_coordinates(st_geometry(water_bodies))[, 1:2]
-    
-    # # Calc dist to nearest
-    # extracted_values$dist_to_water <-
-    #   as.vector(nn2(water_coords, coords, k = 1)$nn.dists)
-  # }
-  
-  # print a string
-  # print(jsonlite::toJSON(extracted_values))
-  
+  return(geojson_list(points))
+}
+
