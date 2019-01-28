@@ -75,7 +75,7 @@ handle_dist_to_water_m = function(points, country) {
   coords <- st_coordinates(points)
   closest <- nn2(water_coords, coords, k = 1)$nn.idx
   dist_m_matrix <- distm(coords, water_coords[closest,])
-  points$dist_to_water_m <- apply(dist_m_matrix, 1, min)
+  points$dist_to_water_m <- round(apply(dist_m_matrix, 1, min),0)
 
   return(points)
 }
