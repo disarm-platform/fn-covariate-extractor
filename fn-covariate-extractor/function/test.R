@@ -1,6 +1,6 @@
 # Test covariate extractor
 
-source('function.R')
+extract_covariate = dget('function.R')
 
 raw_string <-
   '{

@@ -1,9 +1,8 @@
 provider:
   name: faas
-  gateway: http://localhost:8080
-
+  gateway: http://faas.srv.disarm.io
 functions:
   fn-covariate-extractor:
     lang: dockerfile
     handler: ./fn-covariate-extractor
-    image: fn-covariate-extractor
+    image: disarm/fn-covariate-extractor:latest

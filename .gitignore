@@ -1,2 +1,9 @@
 template
 build
+
+.Rhistory
+.Rproj.user
+template
+fn-dbscan-clusterer/fwatchdog
+.DS_Store
+fwatchdog

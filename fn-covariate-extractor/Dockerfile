@@ -2,26 +2,16 @@ FROM rocker/geospatial
 
 RUN mkdir -p /home/app
 
-RUN apk --no-cache add curl \
-    && echo "Pulling watchdog binary from Github." \
-    && curl -sSL https://github.com/openfaas/faas/releases/download/0.9.6/fwatchdog > /usr/bin/fwatchdog \
-    && chmod +x /usr/bin/fwatchdog \
-    && cp /usr/bin/fwatchdog /home/app \
-    && apk del curl --no-cache
+COPY ./fwatchdog /usr/bin
+RUN chmod +x /usr/bin/fwatchdog
 
-# Add non root user
-RUN addgroup -S app && adduser app -S -G app
+WORKDIR /app
 
-RUN chown app /home/app
-
-WORKDIR /home/app
-
-USER app
-
-RUN Rscript "install.packages(c('rworldmap', 'downloader', 'jsonlite'))"
+COPY function/install_packages.R function/
+RUN Rscript function/install_packages.R
 
 # Populate example here - i.e. "cat", "sha512sum" or "node index.js"
-ENV fprocess="cat"
+ENV fprocess="Rscript function/main.R"
 # Set to true to see request in function logs
 ENV write_debug="false"
 
