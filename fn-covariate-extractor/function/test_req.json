@@ -1,6 +1,6 @@
 {
   "layer_names": [
-    "elev"
+    "b1", "elev"
   ],
   "points": {
     "type": "FeatureCollection",

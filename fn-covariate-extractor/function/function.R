@@ -22,15 +22,14 @@ handle_layer = function(points, layer_name, country) {
 }
 
 handle_bioclim = function(points, layer_name) {
-  layer = as.numeric(layer)
+  layer = as.numeric(substr(layer_name, 2, 4))
   layers_raster <-
     raster::getData('worldclim', var = 'bio', res = 10)[[layer]]
   
   # Extract values
   extracted_values <-
-    as.list(data.frame(raster::extract(layers_raster, coords)))
-  names(extracted_values) <- as.character(layer)
-  points$elev = extracted_values
+    as.list(data.frame(raster::extract(layers_raster, st_coordinates(points))))
+  points[layer_name] = extracted_values
   return(points)
 }
 
