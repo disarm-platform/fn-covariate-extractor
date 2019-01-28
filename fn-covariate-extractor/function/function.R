@@ -1,5 +1,3 @@
-
-
 library(raster)
 library(rworldmap)
 library(RANN)
