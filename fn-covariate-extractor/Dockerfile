@@ -2,7 +2,7 @@ FROM rocker/geospatial
 
 RUN mkdir -p /home/app
 
-COPY ./fwatchdog /usr/bin
+ADD https://github.com/openfaas/faas/releases/download/0.9.14/fwatchdog /usr/bin
 RUN chmod +x /usr/bin/fwatchdog
 
 WORKDIR /app
