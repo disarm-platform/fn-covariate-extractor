@@ -72,7 +72,6 @@ handle_dist_to_water_m = function(points, country) {
   water_coords <- st_coordinates(st_geometry(water_bodies))[, 1:2]
   
   # Calc dist to nearest
-  browser()
   coords <- st_coordinates(points)
   closest <- nn2(water_coords, coords, k = 1)$nn.idx
   dist_m_matrix <- distm(coords, water_coords[closest,])
