@@ -15,7 +15,7 @@ COPY main.R .
 COPY function function
 
 # Populate example here - i.e. "cat", "sha512sum" or "node index.js"
-ENV fprocess="Rscript function/main.R"
+ENV fprocess="Rscript main.R"
 # Set to true to see request in function logs
 ENV write_debug="false"
 
