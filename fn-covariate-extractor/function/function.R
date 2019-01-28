@@ -11,7 +11,7 @@ source('utils.R')
 
 function(params) {
   points = st_read(params$points)
-  layer_names = params$layer_names
+  layer_names = tolower(params$layer_names)
   country = as.character(coords2country(coords)[1])
 
   for(layer_name in layer_names) {
@@ -24,14 +24,13 @@ function(params) {
 
 handle_layer = function(layer_name, country) {
 
-  if (layer_name is bioclim) {
+  if (layer_name %in% paste0("b", 1:19)) {
     handle_bioclim(layer_name)
-  } else if (layer_name is elev) {
+  } else if (layer_name == "elev") {
     handle_elev(country)
-  } else if (layer_name is dist_to_water) {
+  } else if (layer_name == "dist_to_water") {
     handle_dist_to_water(country)
   } else {
-    # handle this case
     stop(paste('Unknown layer name', layer_name))
   }
 
@@ -39,11 +38,12 @@ handle_layer = function(layer_name, country) {
 
 
 handle_bioclim = function(layer_name) {
-    layers_raster <- raster::getData('worldclim', var = 'bio', res = 10)[[layers]]
+    layer = as.numeric(layer)
+    layers_raster <- raster::getData('worldclim', var = 'bio', res = 10)[[layer]]
     
     # Extract values
     extracted_values <- as.list(data.frame(raster::extract(layers_raster, coords)))
-    names(extracted_values) <- as.character(layers)
+    names(extracted_values) <- as.character(layer)
     points$elev = extracted_values
 }
 

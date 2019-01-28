@@ -22,7 +22,7 @@ Input GeoJSON FeatureCollection with additional values added.
 ## Layer names
 
 From BioClim (insert link/docs)
-	- index
+	- b1 to b19 index
 
 Also:
 	- `elev` - elevation from XX source
