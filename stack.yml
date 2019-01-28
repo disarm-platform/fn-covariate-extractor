@@ -6,3 +6,7 @@ functions:
     lang: dockerfile
     handler: ./fn-covariate-extractor
     image: disarm/fn-covariate-extractor:latest
+    environment:
+      write_debug: true
+      write_timeout: 60
+      combine_output: false
