@@ -2,10 +2,10 @@ provider:
   name: faas
   gateway: http://faas.srv.disarm.io
 functions:
-  fn-covariate-extractor:
+  fn-covariate-extractor_0_0_1:
     lang: dockerfile
     handler: ./fn-covariate-extractor
-    image: disarm/fn-covariate-extractor:latest
+    image: disarm/fn-covariate-extractor:0.0.1
     environment:
       write_debug: true
       write_timeout: 60
