@@ -21,9 +21,11 @@ Input GeoJSON FeatureCollection with additional values added.
 
 ## Layer names
 
-From BioClim (insert link/docs)
+From BioClim (http://www.worldclim.org/bioclim)
 	- `bioclim1` to `bioclim19` index
 
 Also:
-	- `elev_m` - elevation in metres from XX source
-	- `dist_to_water_m` 'distance to water' in metres layer from XX source
+	- `elev_m` - elevation in metres (CGIAR-SRTM 90 m resolution aggregated to 1km - http://srtm.csi.cgiar.org/)
+	- `dist_to_water_m` 'distance to water' in metres layer from Digital Chart of the World (available via http://www.diva-gis.org/gdata)
+	
+
