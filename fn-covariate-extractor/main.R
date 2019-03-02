@@ -7,9 +7,8 @@ run_function = dget('function/function.R')
 main = function () {
   tryCatch({
     # reads STDIN as JSON, return error if any problems
-    # params = fromJSON(readLines(file("stdin")))
-    params = fromJSON(readLines(file("function/test_req.json")))
-    
+    params = fromJSON(readLines(file("stdin")))
+    #params = fromJSON(readLines(file("function/test_req.json")))
     
     # checks for existence of required parameters, return error if any problems
     # checks types/structure of all parameters, return error if any problems
