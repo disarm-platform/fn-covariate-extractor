@@ -7,8 +7,8 @@ WORKDIR /app
 COPY function/install_packages.R function/
 RUN Rscript function/install_packages.R
 
-# ADD https://github.com/openfaas/faas/releases/download/0.9.14/fwatchdog /usr/bin
-COPY ./fwatchdog /usr/bin
+ADD https://github.com/openfaas/faas/releases/download/0.9.14/fwatchdog /usr/bin
+# COPY ./fwatchdog /usr/bin
 RUN chmod +x /usr/bin/fwatchdog
 
 COPY main.R .
