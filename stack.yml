@@ -5,7 +5,7 @@ functions:
   fn-covariate-extractor:
     lang: dockerfile
     handler: ./fn-covariate-extractor
-    image: disarm/fn-covariate-extractor:0.0.4
+    image: disarm/fn-covariate-extractor:0.0.5
     environment:
       # write_debug: true
       exec_timeout: 60
