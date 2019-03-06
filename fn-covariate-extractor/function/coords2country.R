@@ -8,5 +8,5 @@ function(points) {
   
   # return the ADMIN names of each country
   #indices$ADMIN
-  indices$ISO3 # returns the ISO3 code
+  names(table(indices$ISO3)[which.max(table(indices$ISO3))]) # returns the ISO3 code
 }

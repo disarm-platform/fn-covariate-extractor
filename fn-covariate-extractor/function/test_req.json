@@ -1,7 +1,8 @@
 {
   "layer_names": [
-    "elev_m", 
-    "dist_to_water_m"
+    "elev_m",
+    "dist_to_water_m",
+    "bioclim1"
   ],
   "points": {
     "type": "FeatureCollection",
