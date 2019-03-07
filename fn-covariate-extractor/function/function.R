@@ -23,7 +23,7 @@ handle_layer = function(points, layer_name, country) {
 handle_bioclim = function(points, layer_name) {
   layer = as.numeric(substr(layer_name, 8, 10))
   layers_raster <-
-    raster::getData('worldclim', var = 'bio', res = 10)[[layer]]
+    raster::getData('worldclim', var = 'bio', res = 5)[[layer]]
   
   # Extract values
   extracted_values <-
@@ -36,6 +36,10 @@ handle_elev_m = function(points, country) {
   elev_m <- raster::getData('alt', country = country)
   coords <- st_coordinates(points)
   points$elev_m <- raster::extract(elev_m, coords)
+  
+  # If any points are in the sea, they will appear as NA, 
+  # so recode to 0
+  points$elev_m[is.na(points$elev_m)] <- 0
   return(points)
 }
 
