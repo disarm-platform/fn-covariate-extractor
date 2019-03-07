@@ -82,7 +82,7 @@ handle_dist_to_water_m = function(points, country) {
   
   # If no water data, return NA
   if(nrow(water_coords)==0){
-    return(points$dist_to_water_m=NA)
+    return(points$dist_to_water_m <- NA)
   }
   
   # Calc dist to nearest
