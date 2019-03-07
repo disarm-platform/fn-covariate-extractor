@@ -66,10 +66,24 @@ handle_dist_to_water_m = function(points, country) {
       layer = paste0(country, "_water_areas_dcw"),
       quiet = T # Definitely quiet
     )
+  
+  rivers <-
+    st_read(
+      dsn = paste0(getwd(), "/water", country),
+      layer = paste0(country, "_water_lines_dcw"),
+      quiet = T # Definitely quiet
+    )
     
   
   # get coordinates
-  water_coords <- st_coordinates(st_geometry(water_bodies))[, 1:2]
+  waterbody_coords <- st_coordinates(st_geometry(water_bodies))[, 1:2]
+  river_coords <- st_coordinates(st_geometry(rivers))[, 1:2]
+  water_coords <- rbind(waterbody_coords, river_coords)
+  
+  # If no water data, return NA
+  if(nrow(water_coords))==0){
+    return(points$dist_to_water_m=NA)
+  }
   
   # Calc dist to nearest
   coords <- st_coordinates(points)
