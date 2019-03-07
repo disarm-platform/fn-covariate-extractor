@@ -81,7 +81,7 @@ handle_dist_to_water_m = function(points, country) {
   water_coords <- rbind(waterbody_coords, river_coords)
   
   # If no water data, return NA
-  if(nrow(water_coords))==0){
+  if(nrow(water_coords)==0){
     return(points$dist_to_water_m=NA)
   }
   
