@@ -8,7 +8,7 @@ functions:
     image: disarm/fn-covariate-extractor:0.0.10
     environment:
       write_debug: true
-      exec_timeout: 60
-      write_timeout: 70
-      read_timeout: 70
+      exec_timeout: 600
+      write_timeout: 700
+      read_timeout: 700
       combine_output: false
