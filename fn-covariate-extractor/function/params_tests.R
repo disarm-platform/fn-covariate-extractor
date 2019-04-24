@@ -14,8 +14,8 @@ function(params) {
     stop(paste0("Parameter '", wrong_param, "' is not allowed. Check function specs for valid parameters. "))
   }
   
-  if(!(geojson_lint(as.json(params$points)))){
-    stop("Parameter 'points' is not valid GeoJSON")
-  }
+  # if(!(geojson_lint(as.json(params$points)))){
+  #   stop("Parameter 'points' is not valid GeoJSON")
+  # }
   
 }
