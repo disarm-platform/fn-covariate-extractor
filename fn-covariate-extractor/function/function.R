@@ -99,6 +99,11 @@ handle_dist_to_water_m = function(points, country) {
 }
 
 function(params) {
+  
+  if(substr(tt$points,1,4)=="http"){
+    points = st_read(params$points, quiet = T)
+  }
+  
   points = st_read(as.json(params$points), quiet = T)
   layer_names = tolower(params$layer_names)
   country = as.character(coords2country(st_coordinates(points))[1])
