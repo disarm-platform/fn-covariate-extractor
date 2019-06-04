@@ -5,7 +5,7 @@ Give us a bunch of GeoJSON points and a list of layers, and we'll give you back 
 
 JSON object containing:
 
-- `points` {GeoJSON Points FeatureCollection (or URL)} Points at which to extract covariate values
+- `points` {GeoJSON Points FeatureCollection} Points at which to extract covariate values
 - `layer_names` {Array of string} array: list of layer names to include (from list below)
 
 ## Constraints
