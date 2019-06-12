@@ -26,4 +26,5 @@ Input GeoJSON FeatureCollection with additional values added.
 
 `dist_to_water_m` - 'distance to water' in metres layer from Digital Chart of the World (available via http://www.diva-gis.org/gdata)
 	
-
+## Example input
+An example JSON input can be found [here](https://raw.githubusercontent.com/disarm-platform/fn-covariate-extractor/master/fn-covariate-extractor/function/test_req.json)
