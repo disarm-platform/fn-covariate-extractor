@@ -9,6 +9,7 @@ library(geosphere)
 coords2country = dget('function/coords2country.R')
 
 handle_layer = function(points, layer_name, country) {
+  browser()
   if (layer_name %in% paste0("bioclim", 1:19)) {
     return(handle_bioclim(points, layer_name))
   } else if (layer_name == "elev_m") {
@@ -92,8 +93,7 @@ handle_dist_to_water_m = function(points, country) {
   # Calc dist to nearest
   coords <- st_coordinates(points)
   closest <- nn2(water_coords, coords, k = 1)$nn.idx
-  dist_m_matrix <- distm(coords, water_coords[closest,])
-  points$dist_to_water_m <- round(apply(dist_m_matrix, 1, min),0)
+  points$dist_to_water_m  <- round(distGeo(coords, water_coords[closest,]), 0)
 
   return(points)
 }
@@ -111,7 +111,6 @@ function(params) {
   for (layer_name in layer_names) {
     points = handle_layer(points, layer_name, country)
   }
-
   return(geojson_list(points))
 }
 
