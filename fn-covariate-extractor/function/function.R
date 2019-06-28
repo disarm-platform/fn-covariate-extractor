@@ -9,7 +9,6 @@ library(geosphere)
 coords2country = dget('function/coords2country.R')
 
 handle_layer = function(points, layer_name, country) {
-  browser()
   if (layer_name %in% paste0("bioclim", 1:19)) {
     return(handle_bioclim(points, layer_name))
   } else if (layer_name == "elev_m") {
