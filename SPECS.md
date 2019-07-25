@@ -7,6 +7,7 @@ JSON object containing:
 
 - `points` {GeoJSON Points FeatureCollection} Points at which to extract covariate values
 - `layer_names` {Array of string} array: list of layer names to include (from list below)
+- `resolution` {integer} Optional resolution in km2 (>=1) to resample all covariates to before making extraction. Resmapling performed using bilinear interpolation. Defaults to 1.
 
 ## Constraints
 

@@ -17,5 +17,9 @@ function(params) {
   # if(!(geojson_lint(as.json(params$points)))){
   #   stop("Parameter 'points' is not valid GeoJSON")
   # }
+  if(is.null(params$resolution)){
+    params$resolution <- 1
+  }
   
+  return(params)
 }

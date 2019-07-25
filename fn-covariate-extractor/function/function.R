@@ -8,11 +8,11 @@ library(geosphere)
 
 coords2country = dget('function/coords2country.R')
 
-handle_layer = function(points, layer_name, country) {
+handle_layer = function(points, layer_name, country, ref_raster) {
   if (layer_name %in% paste0("bioclim", 1:19)) {
-    return(handle_bioclim(points, layer_name))
+    return(handle_bioclim(points, layer_name, ref_raster))
   } else if (layer_name == "elev_m") {
-    return(handle_elev_m(points, country))
+    return(handle_elev_m(points, country, ref_raster))
   } else if (layer_name == "dist_to_water_m") {
     return(handle_dist_to_water_m(points, country))
   } else {
@@ -20,10 +20,13 @@ handle_layer = function(points, layer_name, country) {
   }
 }
 
-handle_bioclim = function(points, layer_name) {
+handle_bioclim = function(points, layer_name, ref_raster) {
   layer = as.numeric(substr(layer_name, 8, 10))
   layers_raster <-
     raster::getData('worldclim', var = 'bio', res = 5)[[layer]]
+  
+  # resample
+  layers_raster <- resample(layers_raster, ref_raster)
   
   # Extract values
   extracted_values <-
@@ -32,8 +35,12 @@ handle_bioclim = function(points, layer_name) {
   return(points)
 }
 
-handle_elev_m = function(points, country) {
+handle_elev_m = function(points, country, ref_raster) {
   elev_m <- raster::getData('alt', country = country)
+  
+  # resample
+  elev_m <- resample(elev_m, ref_raster)
+  
   coords <- st_coordinates(points)
   points$elev_m <- raster::extract(elev_m, coords)
   
@@ -106,9 +113,15 @@ function(params) {
   }
   layer_names = tolower(params$layer_names)
   country = as.character(coords2country(st_coordinates(points))[1])
+
+  # Define resolution
+  ref_raster <- raster::getData('alt', country = country)
+  if(params$resolution>1){
+  ref_raster <- aggregate(ref_raster, params$resolution)
+  }
   
   for (layer_name in layer_names) {
-    points = handle_layer(points, layer_name, country)
+    points = handle_layer(points, layer_name, country, ref_raster)
   }
   return(geojson_list(points))
 }
