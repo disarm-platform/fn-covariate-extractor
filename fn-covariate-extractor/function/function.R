@@ -104,6 +104,45 @@ handle_dist_to_water_m = function(points, country) {
   return(points)
 }
 
+handle_dist_to_roads_m <- function(points, country){
+  
+  if (!file.exists("roads_coords.RData")) {
+    
+    download(
+      url = paste0(
+        "https://www.dropbox.com/s/xknq030pxomlc73/road_coords_global_combined.RData?dl=1"
+      ),
+      "road_coords_global_combined.RData"
+    )
+  
+    load("road_coords_global_combined.RData")
+    
+    # Trim roads
+    points_bbox <- st_bbox(points)
+    points_bbox_buffer <- points_bbox + c(-1, -1, 1, 1)
+    road_coords_global_crop <- subset(road_coords_global_combined, 
+                                      road_coords_global_combined$X>points_bbox_buffer[1] & 
+                                        road_coords_global_combined$X<points_bbox_buffer[3] &
+                                        road_coords_global_combined$Y>points_bbox_buffer[2] &
+                                        road_coords_global_combined$Y<points_bbox_buffer[4])
+    
+    # If no roads, return NA
+    if(nrow(road_coords_global_crop)==0){
+      return(points$dist_to_road_m <- NA)
+    }
+    
+    # Calc dist to nearest
+    coords <- st_coordinates(points)
+    closest <- nn2(road_coords_global_crop, coords, k = 1)$nn.idx
+    points$dist_to_road_m  <- round(distGeo(coords, road_coords_global_crop[closest,]), 0)
+    
+}
+  
+  load("roads_coords.RData")
+  
+  
+}
+
 function(params) {
 
   if(substr(params$points,1,4)=="http"){
