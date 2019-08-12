@@ -26,6 +26,8 @@ Input GeoJSON FeatureCollection with additional values added.
 `elev_m` - elevation in metres (CGIAR-SRTM 90 m resolution aggregated to 1km - http://srtm.csi.cgiar.org/)
 
 `dist_to_water_m` - 'distance to water' in metres layer from Digital Chart of the World (available via http://www.diva-gis.org/gdata)
+
+`dist_to_road_m` - 'distance to nearest road in metres using the [gRoads](https://sedac.ciesin.columbia.edu/data/set/groads-global-roads-open-access-v1) dataset
 	
 ## Example input
 An example JSON input can be found [here](https://raw.githubusercontent.com/disarm-platform/fn-covariate-extractor/master/fn-covariate-extractor/function/test_req.json)
