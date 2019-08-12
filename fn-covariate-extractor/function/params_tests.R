@@ -5,7 +5,8 @@ function(params) {
   ref_params <- c(
     paste0("bioclim", 1:19),
     "elev_m",
-    "dist_to_water_m"
+    "dist_to_water_m",
+    "dist_to_road_m"
   )
 
   

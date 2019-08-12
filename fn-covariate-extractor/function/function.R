@@ -15,6 +15,8 @@ handle_layer = function(points, layer_name, country, ref_raster) {
     return(handle_elev_m(points, country, ref_raster))
   } else if (layer_name == "dist_to_water_m") {
     return(handle_dist_to_water_m(points, country))
+  } else if (layer_name == "dist_to_road_m") {
+    return(handle_dist_to_road_m(points))
   } else {
     stop(paste('Unknown layer name', layer_name))
   }
@@ -104,9 +106,9 @@ handle_dist_to_water_m = function(points, country) {
   return(points)
 }
 
-handle_dist_to_roads_m <- function(points, country){
+handle_dist_to_road_m <- function(points){
   
-  if (!file.exists("roads_coords.RData")) {
+  if (!file.exists("road_coords_global_combined.RData")) {
     
     download(
       url = paste0(
@@ -114,6 +116,7 @@ handle_dist_to_roads_m <- function(points, country){
       ),
       "road_coords_global_combined.RData"
     )
+  }
   
     load("road_coords_global_combined.RData")
     
@@ -136,12 +139,9 @@ handle_dist_to_roads_m <- function(points, country){
     closest <- nn2(road_coords_global_crop, coords, k = 1)$nn.idx
     points$dist_to_road_m  <- round(distGeo(coords, road_coords_global_crop[closest,]), 0)
     
-}
-  
-  load("roads_coords.RData")
-  
-  
-}
+    return(points)
+}  
+
 
 function(params) {
 

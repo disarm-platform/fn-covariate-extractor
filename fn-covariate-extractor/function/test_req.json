@@ -2,6 +2,7 @@
   "layer_names": [
     "elev_m",
     "dist_to_water_m",
+    "dist_to_road_m",
     "bioclim1"
   ],
   "points": {
