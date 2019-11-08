@@ -10,7 +10,6 @@ coords2country = dget('function/coords2country.R')
 cache_handler = dget('function/cache_handler.R')
 
 handle_layer = function(points, layer_name, country, ref_raster) {
-  return(print(cache_handler(layer_name, country)))
   if (layer_name %in% paste0("bioclim", 1:19)) {
     return(handle_bioclim(points, layer_name, ref_raster))
   } else if (layer_name == "elev_m") {
