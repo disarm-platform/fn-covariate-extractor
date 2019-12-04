@@ -12,3 +12,6 @@ functions:
       write_timeout: 700
       read_timeout: 700
       combine_output: false
+      http_proxy: squid:3128
+      https_proxy: squid:4128
+      CURL_CA_BUNDLE: /var/openfaas/secrets/ssl-cert
