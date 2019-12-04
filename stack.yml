@@ -5,7 +5,7 @@ functions:
   fn-covariate-extractor:
     lang: r-geospatial
     handler: ./function
-    image: disarm/fn-covariate-extractor:0.0.15
+    image: disarm/fn-covariate-extractor:0.1.0
     environment:
       write_debug: true
       exec_timeout: 600
