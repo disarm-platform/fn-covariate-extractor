@@ -1,5 +1,5 @@
 provider:
-  name: faas
+  name: openfaas
   gateway: https://faas.srv.disarm.io
 functions:
   fn-covariate-extractor:
@@ -15,3 +15,5 @@ functions:
       http_proxy: squid:3128
       https_proxy: squid:4128
       CURL_CA_BUNDLE: /var/openfaas/secrets/ssl-cert
+    labels:
+      com.openfaas.scale.zero: true
