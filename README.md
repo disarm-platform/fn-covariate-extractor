@@ -1,6 +1,12 @@
 # fn-covariate-extractor
 OpenFaas version of the covariate extractor
 
+## Clone template
+
+Before building, need to clone the template: 
+`faas template pull https://github.com/disarm-platform/faas-templates.git`
+
+
 ### OpenFaaS location
 http://faas.srv.disarm.io/function/fn-covariate-extractor
 
