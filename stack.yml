@@ -6,6 +6,8 @@ functions:
     lang: r-geospatial
     handler: ./function
     image: disarm/fn-covariate-extractor:0.1.1
+    secrets:
+      - ssl-cert
     environment:
       write_debug: true
       exec_timeout: 600
