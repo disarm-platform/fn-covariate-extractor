@@ -112,7 +112,7 @@ handle_dist_to_road_m <- function(points){
     
     download(
       url = paste0(
-        "https://www.dropbox.com/s/xknq030pxomlc73/road_coords_global_combined.RData?dl=1"
+        "https://storage.googleapis.com/ds-faas/algo_test_data/fn-covariate-extractor/road_coords_global_combined.RData"
       ),
       "road_coords_global_combined.RData"
     )
