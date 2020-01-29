@@ -54,9 +54,7 @@ handle_elev_m = function(points, country, ref_raster) {
 
 handle_dist_to_water_m = function(points, country) {
   filename = paste0("water", country, ".zip")
-
-  if (!file.exists(filename)) {
-
+  
     download(
       url = paste0(
         "http://biogeo.ucdavis.edu/data/diva/wat/",
@@ -70,8 +68,6 @@ handle_dist_to_water_m = function(points, country) {
       paste0(getwd(), "/water", country) # Define the folder where the zip file should be unzipped to
 
     unzip(paste0("water", country, ".zip"), exdir = outDir)
-
-  }
 
   water_bodies <-
     st_read(
@@ -108,7 +104,7 @@ handle_dist_to_water_m = function(points, country) {
 
 handle_dist_to_road_m <- function(points){
   
-  if (!file.exists("road_coords_global_combined.RData")) {
+  
     
     download(
       url = paste0(
@@ -116,8 +112,7 @@ handle_dist_to_road_m <- function(points){
       ),
       "road_coords_global_combined.RData"
     )
-  }
-  
+
     load("road_coords_global_combined.RData")
     
     # Trim roads
