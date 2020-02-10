@@ -5,7 +5,7 @@ functions:
   fn-covariate-extractor:
     lang: r-geospatial
     handler: ./function
-    image: disarm/fn-covariate-extractor:0.1.4
+    image: disarm/fn-covariate-extractor:0.2.0
     secrets:
       - ssl-cert
     environment:
