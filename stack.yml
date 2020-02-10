@@ -17,5 +17,3 @@ functions:
       http_proxy: squid:3128
       https_proxy: squid:4128
       CURL_CA_BUNDLE: /var/openfaas/secrets/ssl-cert
-    labels:
-      com.openfaas.scale.zero: true
