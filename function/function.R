@@ -166,7 +166,6 @@ function(params) {
     points = st_read(params$points, quiet = T)
   } else {
     points = st_read(rjson::toJSON(params$points), quiet = T)
-    #points = st_read(as.json(params$points), quiet = T)
   }
   layer_names = tolower(params$layer_names)
   country = as.character(coords2country(st_coordinates(points))[1])
