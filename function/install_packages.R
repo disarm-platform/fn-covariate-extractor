@@ -4,7 +4,7 @@ install.packages(c('geojsonio',
 					 'geosphere',
 				   'RANN',
 					 'readr',
-					 'rjson'
+					 'rjson',
 				   'rworldmap'))
 
 
