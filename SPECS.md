@@ -15,8 +15,7 @@ If you're providing a list of `layer_names` to get covariates for, please note: 
 
 ## Constraints
 
-- maximum number of points/features
-- maximum number of layers is XX
+- maximum number of points/features (Still being determined)
 - can only include points within a single country
 
 ## Response
