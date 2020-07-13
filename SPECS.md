@@ -9,10 +9,13 @@ JSON object containing:
 - `layer_names` {Array of string} array: list of layer names to include (from list below)
 - `resolution` {integer} Optional resolution in km2 (>=1) to resample all covariates to before making extraction. Resmapling performed using bilinear interpolation. Defaults to 1.
 
+### Note about `points`, `layer_names` and countries
+
+If you're providing a list of `layer_names` to get covariates for, please note: we use for the first _Feature_ in `points` to determine the country, and then retrieve the relevant covariate layers for that country only. Points spanning multiple countries will only get covariates for the country in which the first point lies.
+
 ## Constraints
 
-- maximum number of points/features
-- maximum number of layers is XX
+- maximum number of points/features (Still being determined)
 - can only include points within a single country
 
 ## Response

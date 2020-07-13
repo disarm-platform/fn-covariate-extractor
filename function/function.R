@@ -24,8 +24,12 @@ handle_layer = function(points, layer_name, country, ref_raster) {
 
 handle_bioclim = function(points, layer_name, ref_raster) {
   layer = as.numeric(substr(layer_name, 8, 10))
-  layers_raster <-
-    raster::getData('worldclim', var = 'bio', res = 5)[[layer]]
+  tryCatch({
+    layers_raster <-
+      raster::getData('worldclim', var = 'bio', res = 5)[[layer]]
+  }, error = function(e) {
+    stop(paste("Problem retrieving bioclim", layer, "layer"))
+  })
   
   # resample
   layers_raster <- resample(layers_raster, ref_raster)
@@ -38,17 +42,6 @@ handle_bioclim = function(points, layer_name, ref_raster) {
 }
 
 handle_elev_m = function(points, country, ref_raster) {
-  # elev_m <- raster::getData('alt', country = country)
-  # 
-  # # Join rasters if mutiple
-  # if(length(elev_m) > 1){
-  #     n_layers <- length(elev_m)
-  #     layers_as_vector <- paste0('elev_m[[', 1:n_layers,']]', collapse = ",")
-  #     elev_m <- eval(parse(text=paste('raster::merge(', layers_as_vector, ')')))
-  # }
-  # 
-  # # resample
-  # elev_m <- resample(elev_m, ref_raster)
   elev_m <- ref_raster
   
   coords <- st_coordinates(points)
@@ -62,16 +55,21 @@ handle_elev_m = function(points, country, ref_raster) {
 
 handle_dist_to_water_m = function(points, country) {
   filename = paste0("water", country, ".zip")
+
+  tryCatch({
+    download(
+      url = paste0(
+        "http://biogeo.ucdavis.edu/data/diva/wat/",
+        country,
+        "_wat.zip"
+      ),
+      filename,
+      mode = "wb"
+    )
+  }, error = function(e) {
+    stop("Problem retrieving dist_to_water_m layer")
+  })
   
-  download(
-    url = paste0(
-      "http://biogeo.ucdavis.edu/data/diva/wat/",
-      country,
-      "_wat.zip"
-    ),
-    filename,
-    mode = "wb"
-  )
   outDir <-
     paste0(getwd(), "/water", country) # Define the folder where the zip file should be unzipped to
   
@@ -113,14 +111,19 @@ handle_dist_to_water_m = function(points, country) {
 }
 
 handle_dist_to_road_m <- function(points) {
-  download(
-    url = paste0(
-      "https://storage.googleapis.com/ds-faas/algo_test_data/fn-covariate-extractor/road_coords_global_combined.RData"
-    ),
-    "road_coords_global_combined.RData"
-  )
+  tryCatch({
+    download(
+      url = paste0(
+        "https://storage.googleapis.com/ds-faas/algo_test_data/fn-covariate-extractor/road_coords_global_combined.RData"
+      ),
+      "road_coords_global_combined.RData"
+    )
+    
+    load("road_coords_global_combined.RData")
+  }, error = function(e) {
+    stop("Problem retrieving dist_to_road_m layer")
+  })
   
-  load("road_coords_global_combined.RData")
   
   # Trim roads
   points_bbox <- st_bbox(points)
@@ -156,13 +159,16 @@ function(params) {
     points = st_read(params$points, quiet = T)
   } else {
     points = st_read(rjson::toJSON(params$points), quiet = T)
-    #points = st_read(as.json(params$points), quiet = T)
   }
   layer_names = tolower(params$layer_names)
   country = as.character(coords2country(st_coordinates(points))[1])
   
   # Define resolution
-  ref_raster <- raster::getData('alt', country = country)
+  tryCatch({
+    ref_raster <- raster::getData('alt', country = country)
+  }, error = function(e) {
+    stop("Problem retrieving elev_m layer")
+  })
   
   # Join rasters if mutiple
   if(length(ref_raster) > 1){
