@@ -158,7 +158,7 @@ function(params) {
   if (substr(params$points, 1, 4) == "http") {
     points = st_read(params$points, quiet = T)
   } else {
-    points = st_read(rjson::toJSON(params$points), quiet = T)
+    points = st_read(geojsonio::as.json(params$points), quiet = T)
   }
   layer_names = tolower(params$layer_names)
   country = as.character(coords2country(st_coordinates(points))[1])
@@ -169,15 +169,15 @@ function(params) {
   }, error = function(e) {
     stop("Problem retrieving elev_m layer")
   })
-  
+
   # Join rasters if mutiple
-  if(length(ref_raster) > 1){
+  if(is.list(ref_raster)){
     n_layers <- length(ref_raster)
     layers_as_vector <- paste0('ref_raster[[', 1:n_layers,']]', collapse = ",")
     ref_raster <- eval(parse(text=paste('raster::merge(', layers_as_vector, ')')))
   }
   
-  if (params$resolution > 1) {
+  if (!is.null(params$resolution)) {
     ref_raster <- aggregate(ref_raster, params$resolution)
   }
 
