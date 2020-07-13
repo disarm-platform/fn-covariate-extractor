@@ -38,10 +38,18 @@ handle_bioclim = function(points, layer_name, ref_raster) {
 }
 
 handle_elev_m = function(points, country, ref_raster) {
-  elev_m <- raster::getData('alt', country = country)
-  
-  # resample
-  elev_m <- resample(elev_m, ref_raster)
+  # elev_m <- raster::getData('alt', country = country)
+  # 
+  # # Join rasters if mutiple
+  # if(length(elev_m) > 1){
+  #     n_layers <- length(elev_m)
+  #     layers_as_vector <- paste0('elev_m[[', 1:n_layers,']]', collapse = ",")
+  #     elev_m <- eval(parse(text=paste('raster::merge(', layers_as_vector, ')')))
+  # }
+  # 
+  # # resample
+  # elev_m <- resample(elev_m, ref_raster)
+  elev_m <- ref_raster
   
   coords <- st_coordinates(points)
   points$elev_m <- raster::extract(elev_m, coords)
@@ -155,10 +163,18 @@ function(params) {
   
   # Define resolution
   ref_raster <- raster::getData('alt', country = country)
+  
+  # Join rasters if mutiple
+  if(length(ref_raster) > 1){
+    n_layers <- length(ref_raster)
+    layers_as_vector <- paste0('ref_raster[[', 1:n_layers,']]', collapse = ",")
+    ref_raster <- eval(parse(text=paste('raster::merge(', layers_as_vector, ')')))
+  }
+  
   if (params$resolution > 1) {
     ref_raster <- aggregate(ref_raster, params$resolution)
   }
-  
+
   for (layer_name in layer_names) {
     points = handle_layer(points, layer_name, country, ref_raster)
   }
